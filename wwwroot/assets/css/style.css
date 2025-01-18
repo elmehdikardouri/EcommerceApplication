@@ -1,0 +1,256 @@
+﻿/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+html, body {
+    height: 100%; /* Assure que la hauteur de la page couvre tout l'écran */
+}
+
+body {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    height: 100%;
+    width: 260px;
+    background: #11101d;
+    padding: 15px;
+    z-index: 99;
+    overflow-y: auto; /* Ajoute le défilement si nécessaire */
+}
+
+.logo {
+    font-size: 25px;
+    padding: 0 15px;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Sidebar menu content */
+.menu-content {
+    margin-top: 40px;
+}
+
+.menu-items {
+    list-style: none;
+    transition: all 0.4s ease;
+}
+.item a,
+.submenu-item {
+    padding: 16px;
+    display: inline-block;
+    width: 100%;
+    border-radius: 12px;
+    color: #fff;
+}
+
+    .item a:hover,
+    .submenu-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    height: 60px; /* Hauteur fixe de la navbar */
+    width: calc(100% - 260px); /* Ajuste la largeur en fonction de la sidebar */
+    left: 260px; /* Décalage à droite pour laisser de la place à la sidebar */
+    top: 0;
+    background: #4070f4;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 25px;
+    z-index: 1000;
+    transition: all 0.5s ease;
+}
+
+    .navbar #sidebar-close {
+        cursor: pointer;
+    }
+
+/* Main content */
+.main {
+    margin-top: 60px; /* Ajuste pour laisser de la place à la navbar */
+    margin-left: 260px; /* Ajuste pour laisser de la place à la sidebar */
+    width: calc(100% - 260px); /* Prend toute la largeur restante */
+    height: calc(100vh - 60px); /* Prend toute la hauteur restante */
+    background: #e7f2fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
+
+    .main h1 {
+        color: #11101d;
+        font-size: 40px;
+        text-align: center;
+    }
+
+/* Lorsque la sidebar est fermée */
+.sidebar.close ~ .navbar {
+    left: 0;
+    width: 100%;
+}
+.logout-form .item {
+    padding: 16px;
+    display: inline-block;
+    width: 100%;
+    border-radius: 12px;
+    color: #fff;
+    background: none; /* Pas de fond spécifique par défaut */
+    border: none; /* Supprime la bordure par défaut */
+    cursor: pointer; /* Montre que c'est cliquable */
+    text-align: left;
+}
+
+    .logout-form .item:hover {
+        background: rgba(255, 255, 255, 0.1); /* Ajoute un effet de survol */
+    }
+
+
+.sidebar.close ~ .main {
+    margin-left: 0;
+    width: 100%;
+}
+
+
+/* Form Styles */
+.form-container {
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #11101d;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Table Styles */
+.table-container {
+    margin: 20px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .table th {
+        background: #4070f4;
+        color: white;
+        font-weight: 600;
+    }
+
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #4070f4;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background: #3359c4;
+    }
+
+.btn-secondary {
+    background: #f0ad4e;
+    color: #fff;
+}
+
+    .btn-secondary:hover {
+        background: #d98a31;
+    }
+
+.btn-danger {
+    background: #d9534f;
+    color: #fff;
+}
+
+    .btn-danger:hover {
+        background: #c9302c;
+    }
+
+
+
+
+
+
+
+
+
+
+    

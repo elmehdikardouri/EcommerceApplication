@@ -1,0 +1,42 @@
+﻿@model IEnumerable<EcomApplication.Models.Order>
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2>Liste des Commandes</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Date</th>
+            <th>Montant Total</th>
+            <th>Utilisateur</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                <td>@order.TotalAmount.ToString("C")</td>
+                <td>
+                    @if (order.User != null)
+                    {
+                        @order.User.Username
+                    }
+                </td>
+                <td>
+                    <a href="@Url.Action("OrderDetails", "Admin", new { id = order.Id })" class="btn btn-info btn-sm">Détails</a>
+                    <a href="@Url.Action("EditOrder", "Admin", new { id = order.Id })" class="btn btn-warning btn-sm">Modifier</a>
+                    <form method="post" action="@Url.Action("DeleteOrder", "Admin")" style="display: inline-block;">
+                        <input type="hidden" name="id" value="@order.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer cette commande ?');">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

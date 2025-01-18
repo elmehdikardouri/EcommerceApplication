@@ -1,0 +1,268 @@
+﻿@model IEnumerable<EcomApplication.Models.Product>;
+
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml"; // Utilisation de votre layout ClientLayout
+    var userName = ViewContext.HttpContext.Session.GetString("UserName"); // Récupération du nom d'utilisateur connecté
+    var cartItemCount = ViewContext.HttpContext.Session.GetInt32("CartItemCount") ?? 0; // Nombre d'articles dans le panier
+}
+
+<!-- Barre supérieure avec les actions utilisateur -->
+<div class="container-fluid bg-dark text-white py-2">
+    <div class="container d-flex justify-content-between align-items-center">
+        <!-- Message de bienvenue -->
+        <div>
+            <span>Bonjour @User.Identity.Name</strong> !</span>
+        </div>
+
+        <!-- Boutons de déconnexion et panier -->
+        <div>
+            <!-- Bouton déconnexion -->
+            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                <button type="submit" class="btn btn-danger btn-sm">Déconnexion</button>
+            </form>
+
+            <!-- Icône du panier -->
+            <a href="@Url.Action("ViewCart", "Cart")" class="btn btn-outline-light btn-sm ms-3 position-relative">
+                <i class="bi bi-cart3"></i> <!-- Icône du panier -->
+                @if (cartItemCount > 0)
+                {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        @cartItemCount
+                    </span>
+                }
+            </a>
+        </div>
+    </div>
+</div>
+
+<h1 class="text-center mt-4">Welcome to the Product Gallery</h1>
+
+<div class="container">
+    <!-- Images Filter Buttons Section -->
+    <div class="row mt-5 text-center" id="filter-buttons">
+        <div class="col-12">
+            <a href="@Url.Action("Filtre", "Client", new { category = "Survêtement" })" class="btn btn-primary mb-2 mx-1">Survêtement</a>
+            <a href="@Url.Action("Filtre", "Client", new { category = "Crampons" })" class="btn btn-primary mb-2 mx-1">Crampons</a>
+            <a href="@Url.Action("Filtre", "Client", new { category = "Accessoires" })" class="btn btn-primary mb-2 mx-1">Accessoires</a>
+        </div>
+    </div>
+
+    <!-- Filterable Images / Cards Section -->
+    <div class="row px-2 mt-4 gap-4 justify-content-center" id="filterable-cards">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var product in Model)
+            {
+                <div class="card p-0 col-md-4 col-lg-3 shadow-sm d-flex flex-column align-items-center" data-name="@product.Category?.Name ?? " Unknown"">
+                    <a href="@Url.Action("Details", "Client", new { id = product.Id })" class="card-link text-decoration-none text-dark w-100 flex-grow-1">
+                        <!-- Vérifie si Category ou Name est null -->
+                        @if (product.Image != null && product.Image.Length > 0)
+                        {
+                            <img src="data:image/png;base64,@(Convert.ToBase64String(product.Image))" alt="Product Image" class="card-img-top img-fluid" style="height: 200px; object-fit: contain; padding: 15px;">
+                        }
+                        else
+                        {
+                            <img src="~/images/default-product.jpg" alt="Default Product Image" class="card-img-top img-fluid" style="height: 200px; object-fit: contain; padding: 15px;">
+                        }
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@product.Name </h5>
+                            <p class="card-text fw-bold text-success">@product.Price.ToString("C")</p>
+                        </div>
+                    </a>
+                    <!-- Boutons ajustés -->
+                    <div class="card-footer w-100 d-flex justify-content-center gap-2 p-3">
+                        <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-success btn-sm px-4">Ajouter au panier</a>
+                        <a href="@Url.Action("Order", "Order", new { id = product.Id })" class="btn btn-primary btn-sm px-4">Commander</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">Aucun produit disponible.</p>
+        }
+    </div>
+</div>
+
+<!-- Styles -->
+ <style>
+    /* Style général */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #343a40;
+        margin-top: 2rem;
+    }
+
+    /* Cart Styles */
+    .card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        height: 100%; /* Hauteur uniforme */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        width: 100%;
+        max-width: 300px; /* Largeur plus grande pour les cartes */
+        margin-bottom: 20px;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            object-fit: contain;
+            width: 100%;
+        }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .card-footer {
+        background-color: #ffffff;
+        border-top: 1px solid #e9ecef;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        gap: 2rem; /* Augmenter l'espace entre les boutons */
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    /* Boutons */
+    .btn {
+        font-size: 0.85rem; /* Augmenter la taille de la police pour un meilleur rendu */
+        padding: 8px 20px; /* Augmenter le padding des boutons pour les rendre plus visibles */
+        border-radius: 15px; /* Boutons arrondis */
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        color: white;
+    }
+
+    /* Spécifier les couleurs des boutons pour success et primary */
+    .btn-success {
+        background-color: #D9B471; /* Couleur personnalisée pour "Ajouter au panier" */
+    }
+
+    .btn-primary {
+        background-color: #8C5332; /* Couleur personnalisée pour "Commander" */
+    }
+
+    .btn-success:hover {
+        background-color: #b79545; /* Ton plus foncé pour le bouton de succès */
+    }
+
+    .btn-primary:hover {
+        background-color: #70442b; /* Ton plus foncé pour le bouton principal */
+    }
+
+    /* Section des filtres - Liens avec la couleur #324001 */
+    #filter-buttons a {
+        border-radius: 20px;
+        padding: 8px 15px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        background-color: #324001; /* Couleur personnalisée */
+        color: white;
+    }
+
+        #filter-buttons a:hover {
+            background-color: #2b3d01; /* Ton plus foncé au survol */
+        }
+
+    /* Section des cartes filtrables */
+    #filterable-cards {
+        gap: 3rem; /* Plus d'espace entre les cartes */
+    }
+
+    .card-footer a {
+        font-size: 0.85rem; /* Taille de police ajustée */
+        padding: 8px 20px; /* Ajouter du padding pour plus de visibilité */
+        border-radius: 15px; /* Boutons arrondis */
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        background-color: #D9B471; /* Couleur personnalisée pour le bouton "Ajouter au panier" */
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        /* Effet de survol des liens */
+        .card-footer a:hover {
+            background-color: #b79545; /* Ton plus foncé lors du survol */
+            transform: scale(1.05);
+        }
+
+    .navbar-dark .btn-outline-light {
+        color: white; /* Couleur du texte pour les boutons */
+        border-color: white; /* Bordure blanche */
+    }
+
+        .navbar-dark .btn-outline-light:hover {
+            color: black; /* Texte noir au survol */
+            background-color: white; /* Fond blanc au survol */
+            border-color: white;
+        }
+
+    .navbar-dark .bi-cart3 {
+        color: white; /* Couleur de l'icône panier */
+    }
+
+    .badge.bg-danger {
+        background-color: #dc3545; /* Rouge vif pour le badge */
+        color: white;
+    }
+</style> 
+
+
+
+<!-- JavaScript pour filtrer les produits -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('#filter-buttons button');
+        const cards = document.querySelectorAll('#filterable-cards .card');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+
+                // Activer le bouton cliqué
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filtrer les produits
+                cards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-name').toLowerCase() === filter.toLowerCase()) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>

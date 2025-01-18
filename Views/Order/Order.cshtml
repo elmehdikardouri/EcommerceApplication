@@ -1,0 +1,51 @@
+﻿@model EcomApplication.Models.Order
+
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<h1 class="text-center mt-4 text-primary">Confirmation de la Commande</h1>
+
+@if (Model != null)
+{
+    <div class="container">
+        <h3 class="text-center">Merci pour votre commande, @Model.UserId!</h3>
+        <p class="text-center">Voici les détails de votre commande :</p>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Sous-total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.UnitPrice.ToString("C")</td>
+                            <td>@item.Quantity</td>
+                            <td>@(item.Quantity * item.UnitPrice).ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <h4 class="text-end text-success">Total : @Model.TotalAmount.ToString("C")</h4>
+
+        <div class="text-center mt-4">
+            <a href="@Url.Action("ClientGallery", "Client")" class="btn btn-primary btn-lg">
+                <i class="fas fa-arrow-left"></i> Retour à la galerie
+            </a>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-center text-danger">Une erreur est survenue lors de la création de la commande.</p>
+}

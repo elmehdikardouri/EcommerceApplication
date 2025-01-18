@@ -1,0 +1,62 @@
+﻿@model EcomApplication.Models.Product
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Ajouter un produit";
+    var categories = ViewBag.Categories as List<EcomApplication.Models.Category>;
+}
+
+<div class="form-container">
+    <h2 class="form-title">Ajouter un produit</h2>
+    <form method="post" action="/Admin/Create" enctype="multipart/form-data" class="form">
+        <div class="form-group">
+            <label for="Name">Nom du produit</label>
+            <input type="text" id="Name" name="Name" class="form-input" />
+            @if (ViewData.ModelState["Name"]?.Errors.Count > 0)
+            {
+                <span class="error-message">@ViewData.ModelState["Name"].Errors[0].ErrorMessage</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="Price">Prix</label>
+            <input type="number" id="Price" name="Price" step="0.01" class="form-input" />
+            @if (ViewData.ModelState["Price"]?.Errors.Count > 0)
+            {
+                <span class="error-message">@ViewData.ModelState["Price"].Errors[0].ErrorMessage</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea id="Description" name="Description" class="form-input"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="CategoryId">Catégorie</label>
+            <select id="CategoryId" name="CategoryId" class="form-input">
+                <option value="0">-- Sélectionnez une catégorie --</option>
+                @if (ViewBag.Categories != null)
+                {
+                    foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                }
+            </select>
+            @if (ViewData.ModelState["CategoryId"]?.Errors.Count > 0)
+            {
+                <span class="error-message">@ViewData.ModelState["CategoryId"].Errors[0].ErrorMessage</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="Image">Image du produit</label>
+            <input type="file" id="Image" name="image" class="form-input" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+    </form>
+</div>

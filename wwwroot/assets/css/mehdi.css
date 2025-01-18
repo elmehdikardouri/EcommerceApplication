@@ -1,0 +1,139 @@
+﻿/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Couleur d'arrière-plan légère */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 2.5rem;
+    color: #007bff;
+}
+
+/* Buttons styles */
+button.btn {
+    border-radius: 30px; /* Boutons arrondis */
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    button.btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px); /* Légère élévation */
+    }
+
+button.active {
+    background-color: #007bff !important;
+    color: #fff !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Container styles */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Cards styles */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+    .card:hover {
+        transform: translateY(-5px); /* Légère élévation */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+    }
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    transition: color 0.2s ease;
+}
+
+    .card-title:hover {
+        color: #007bff;
+    }
+
+.card-text {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.card .btn {
+    border-radius: 20px;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+}
+
+/* Buttons within cards */
+.card .btn-success {
+    background-color: #28a745;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+    .card .btn-success:hover {
+        background-color: #218838;
+    }
+
+.card .btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+    .card .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+/* Row styles for cards */
+#filterable-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacement entre les cartes */
+    justify-content: center; /* Centrer les cartes */
+}
+
+.card-link {
+    text-decoration: none; /* Retirer les soulignements */
+    color: inherit; /* Garder la couleur du texte */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        width: 90%; /* Réduction de la largeur des cartes sur mobile */
+    }
+}
+
+@media (min-width: 768px) {
+    .card {
+        width: 22%; /* Largeur des cartes sur les écrans moyens et grands */
+    }
+}

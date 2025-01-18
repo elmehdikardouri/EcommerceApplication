@@ -1,0 +1,56 @@
+﻿@model EcomApplication.Models.Order
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Détails de la commande #@Model.Id</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Utilisateur :</strong> @Model.User?.Username</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p><strong>Date :</strong> @Model.OrderDate.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Montant Total :</strong> <span class="text-success">@Model.TotalAmount €</span></p>
+                </div>
+            </div>
+
+            <h3 class="mt-4">Articles Commandés</h3>
+            <table class="table table-hover table-bordered mt-3">
+                <thead class="table-light">
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Product?.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.UnitPrice €</td>
+                            <td>@(item.Quantity * item.UnitPrice) €</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-end">
+            <a href="@Url.Action("Orders", "Admin")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour
+            </a>
+        </div>
+    </div>
+</div>

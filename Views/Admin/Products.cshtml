@@ -1,0 +1,55 @@
+﻿@model IEnumerable<EcomApplication.Models.Product>
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Products Management";
+}
+
+<div class="table-container">
+    <h2 class="table-title">Products Management</h2>
+    <a href="/Admin/AddProduct" class="btn btn-primary">Add New Product</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Description</td>
+                    <td>@product.Category?.Name</td>
+                    <td>
+                        @if (product.Image != null && product.Image.Length > 0)
+                        {
+                            var imageBase64 = Convert.ToBase64String(product.Image);
+                            var imageSrc = $"data:image/png;base64,{imageBase64}";
+                            <img src="@imageSrc" alt="@product.Name" style="max-height: 50px;" />
+                        }
+                        else
+                        {
+                            <span>No image</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Admin/Edit/@product.Id" class="btn btn-secondary">Edit</a>
+                        <form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

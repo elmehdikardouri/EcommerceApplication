@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @RenderSection("Title", required: false)</title>
+    <link rel="stylesheet" href="~/assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <a href="#" class="logo">EliteFoot</a>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <div class="menu-title">Dashboard</div>
+                <li class="item"><a href="/Admin/Index">Dashboard Home</a></li>
+                <li class="item"><a href="/Admin/Users">Users Management</a></li>
+                <li class="item"><a href="/Admin/Products">Products</a></li>
+                <li class="item"><a href="/Admin/Orders">Orders</a></li>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form" style="display: inline;">
+                    <button type="submit" class="btn item">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <i class="fa-solid fa-bars" id="sidebar-close"></i>
+        <span>Bonjour @User.Identity.Name</span> <!-- Affichage du nom d'utilisateur -->
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        @RenderBody()
+    </main>
+
+
+    @if (IsSectionDefined("Scripts"))
+    {
+        @RenderSection("Scripts", required: false)
+    }
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>
+
+}

@@ -1,0 +1,78 @@
+﻿@model EcomApplication.Models.Product
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Modifier un produit";
+    var categories = ViewBag.Categories as List<EcomApplication.Models.Category>;
+}
+
+<div class="form-container">
+    <h2 class="form-title">Modifier un produit</h2>
+    <form method="post" action="/Admin/Edit/@Model.Id" enctype="multipart/form-data" class="form">
+        <div class="form-group">
+            <label for="Name">Nom du produit</label>
+            <input type="text" id="Name" name="Name" class="form-input" value="@Model.Name" />
+            @if (ViewData.ModelState["Name"]?.Errors.Count > 0)
+            {
+                <span class="error-message">@ViewData.ModelState["Name"].Errors[0].ErrorMessage</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="Name">Prix</label>
+            <input type="number" id="Price" name="Price" step="0.01" class="form-input" value="@Model.Price" />
+            @if (ViewData.ModelState["Price"]?.Errors.Count > 0)
+            {
+                <span class="error-message">@ViewData.ModelState["Price"].Errors[0].ErrorMessage</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea id="Description" name="Description" class="form-input">@Model.Description</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="CategoryId">Catégorie</label>
+          
+            <select id="CategoryId" name="CategoryId" class="form-input">
+                <option value="0">-- Sélectionnez une catégorie --</option>
+                @if (categories != null)
+                {
+                    foreach (var category in categories)
+                    {
+                        var option = new TagBuilder("option");
+                        option.Attributes["value"] = category.Id.ToString();
+                        if (category.Id == Model.CategoryId)
+                        {
+                            option.Attributes["selected"] = "selected";
+                        }
+                        option.InnerHtml.Append(category.Name);
+                        @option
+                    }
+                }
+            </select>
+            @if (ViewData.ModelState["CategoryId"]?.Errors.Count > 0)
+            {
+                <span class="error-message">@ViewData.ModelState["CategoryId"].Errors[0].ErrorMessage</span>
+            }
+        </div>
+
+        <div class="form-group">
+            <label for="Image">Image du produit</label>
+            <input type="file" id="Image" name="image" class="form-input" />
+            @if (Model.Image != null && Model.Image.Length > 0)
+            {
+                <div class="current-image">
+                    <label>Image actuelle :</label>
+                    <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="Image du produit" style="max-width: 200px; max-height: 200px;" />
+                </div>
+                <input type="hidden" name="CurrentImage" value="@Convert.ToBase64String(Model.Image)" />
+            }
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Modifier</button>
+        </div>
+    </form>
+</div>

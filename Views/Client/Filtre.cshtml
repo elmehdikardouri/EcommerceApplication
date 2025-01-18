@@ -1,0 +1,47 @@
+﻿@model IEnumerable<EcomApplication.Models.Product>;
+
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<h1 class="text-center mt-4">Welcome to the Product Gallery</h1>
+
+<div class="container">
+   
+
+    <!-- Filterable Images / Cards Section -->
+    <div class="row" id="filterable-cards">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var product in Model)
+            {
+                <div class="card p-0 col-md-4 col-lg-3 shadow-sm d-flex flex-column align-items-center" data-name="@product.Category?.Name ?? " Unknown"">
+                    <a href="@Url.Action("Details", "Client", new { id = product.Id })" class="card-link text-decoration-none text-dark w-100 flex-grow-1">
+                        <!-- Vérifie si Category ou Name est null -->
+                        @if (product.Image != null && product.Image.Length > 0)
+                        {
+                            <img src="data:image/png;base64,@(Convert.ToBase64String(product.Image))" alt="Product Image" class="card-img-top img-fluid" style="height: 200px; object-fit: contain; padding: 15px;">
+                        }
+                        else
+                        {
+                            <img src="~/images/default-product.jpg" alt="Default Product Image" class="card-img-top img-fluid" style="height: 200px; object-fit: contain; padding: 15px;">
+                        }
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@product.Name </h5>
+                            <p class="card-text fw-bold text-success">@product.Price.ToString("C")</p>
+                        </div>
+                    </a>
+                    <!-- Boutons ajustés -->
+                    <div class="card-footer w-100 d-flex justify-content-center gap-2 p-3">
+                        <a href="@Url.Action("AddToCart", "Cart", new { id = product.Id })" class="btn btn-success btn-sm px-4">Ajouter au panier</a>
+                        <a href="@Url.Action("Order", "Order", new { id = product.Id })" class="btn btn-primary btn-sm px-4">Commander</a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">Aucun produit disponible.</p>
+        }
+    </div>
+</div>

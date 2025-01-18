@@ -1,0 +1,63 @@
+﻿@model EcomApplication.Models.Cart
+
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+<!-- Titre de la page -->
+<h1 class="text-center mt-4 text-primary">Votre Panier</h1>
+
+@if (Model?.CartItems == null || !Model.CartItems.Any())
+{
+    <p class="text-center text-muted">Votre panier est vide.</p>
+}
+else
+{
+    <div class="container">
+        <!-- Tableau du panier -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Sous-total</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Product.Price.ToString("C")</td> <!-- Afficher le prix au format monétaire -->
+                            <td>@item.Quantity</td>
+                            <td>@(item.Quantity * item.Product.Price) €</td>
+                            <td>
+                                <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.Id })" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i> Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section Total -->
+        <div class="text-end mb-4">
+            <h4 class="text-success">Total : @Model.CartItems.Sum(ci => ci.Quantity * ci.Product.Price) €</h4> <!-- Total au format monétaire -->
+            <a href="@Url.Action("Order", "Order")" class="btn btn-success btn-lg">
+                <i class="fas fa-credit-card"></i> Passer commande
+            </a>
+        </div>
+
+        <!-- Bouton retour à la page des articles -->
+        <div class="text-center mt-4">
+            <a href="@Url.Action("ClientGallery", "Client")" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-arrow-left"></i> Retour à la page des articles
+            </a>
+        </div>
+    </div>
+}
